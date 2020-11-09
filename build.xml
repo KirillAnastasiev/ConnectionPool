@@ -1,0 +1,36 @@
+<project name="ConnectionPool" basedir="." default="war">
+
+    <path id="classpath">
+        <fileset dir="${basedir}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <echo message="Cleaning project directories"/>
+        <delete dir="${basedir}/build"/>
+        <delete dir="${basedir}/dest"/>
+    </target>
+
+    <target name="init" depends="clean">
+        <echo message="Creating a build directory"/>
+        <mkdir dir="${basedir}/build"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <echo message="Compiling source classes"/>
+        <javac srcdir="${basedir}/src" destdir="build">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <target name="war" depends="compile">
+        <echo message="Building a war file"/>
+        <war destfile="${basedir}/dest/${ant.project.name}.war" webxml="${basedir}/web/WEB-INF/web.xml">
+            <classes dir="${basedir}/build"/>
+            <lib dir="${basedir}/lib"/>
+            <fileset dir="web"/>
+        </war>
+    </target>
+
+</project>
